@@ -20,7 +20,7 @@ public class Collider : MonoBehaviour
   public bool showCollider = true;
 
   [SerializeField]
-  public float lineWidth = 0.1f;
+  public float lineWidth = 0.05f;
 
   public ColliderType colliderType;
 

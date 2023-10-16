@@ -31,6 +31,11 @@ public class CircleCollider : Collider
     }
   }
 
+  public float GetRadius()
+  {
+    return radius * transform.localScale.x;
+  }
+
 
   public override bool IsColliding(Collider other)
   {
@@ -39,8 +44,8 @@ public class CircleCollider : Collider
 
   public override bool IsCollidingWith(CircleCollider other)
   {
-    float r1 = this.radius;
-    float r2 = other.radius;
+    float r1 = this.GetRadius();
+    float r2 = other.GetRadius();
     float d = Vector3.Distance(this.transform.position, other.transform.position);
     return d <= r1 + r2;
   }
@@ -51,7 +56,7 @@ public class CircleCollider : Collider
     Vector2 closestPointLine = other.GetClosestPoint(this.transform.position);
     
     float d = Vector2.Distance(closestPointLine, this.transform.position);
-    bool isColliding = d <= radius;
+    bool isColliding = d <= GetRadius();
     Debug.Log("is colliding: " + isColliding);
     return isColliding;
   }
@@ -60,7 +65,7 @@ public class CircleCollider : Collider
   {
     Vector2 direction = point - (Vector2)transform.position;
     direction.Normalize();
-    return (Vector2)transform.position + direction * radius;
+    return (Vector2)transform.position + direction * GetRadius();
   }
 
   public override Vector2 GetNormal(Vector2 point)

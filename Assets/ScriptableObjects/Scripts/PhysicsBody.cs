@@ -62,7 +62,7 @@ public class PhysicsBody : MonoBehaviour
 
 
       // do note resolve if velocities are separating
-      if (velocityAlongNormal < 0) return Vector2.zero;
+      // if (velocityAlongNormal < 0) return Vector2.zero;
 
       float e = Mathf.Min(restitution, other.restitution);
       float j = -(1 + e) * velocityAlongNormal;
@@ -86,6 +86,11 @@ public class PhysicsBody : MonoBehaviour
       Vector2 impulse = getImpulse(other);
       velocity += 1 / getMass() * impulse;
       other.velocity -= 1 / other.getMass() * impulse;
+    }
+
+    public void addForce(Vector2 force)
+    {
+      velocity += force / getMass();
     }
     
 
