@@ -9,7 +9,7 @@ public class PhysicsBody : MonoBehaviour
 
     public Vector2 velocity = new Vector2(0f, 0f);
     [SerializeField]
-    private float mass = 5f;
+    public float mass = 5f;
     [SerializeField]
     public bool immovable = false;
     [SerializeField]

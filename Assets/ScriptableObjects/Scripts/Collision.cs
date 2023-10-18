@@ -115,6 +115,11 @@ public class Collision : MonoBehaviour
 
     void FixedUpdate()
     {
+      List<VerletMesh> verletMeshes = VerletSolver.verletMeshes;
+      for (int i =0; i < verletMeshes.Count; i++) {
+        VerletMesh verletMesh = verletMeshes[i];
+        VerletSolver.Solve(verletMesh);
+      } 
       handleCollisions();
     }
 

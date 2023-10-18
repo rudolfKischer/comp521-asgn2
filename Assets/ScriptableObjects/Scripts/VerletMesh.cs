@@ -18,6 +18,19 @@ public class VerletMesh : MonoBehaviour
     [SerializeField]
     public Color color = Color.red;
 
+    [SerializeField]
+    public MeshType meshType = MeshType.FISH_SHAPE;
+
+    public enum MeshType
+    {
+
+        FISH_SHAPE,
+        LINE,
+        LOOP,
+        FULLY_CONNECTED_LOOP,
+        FISH_SHAPE_FULLY_CONNECTED
+    }
+
     void Start()
     {
         initLineRenderer();
@@ -25,7 +38,23 @@ public class VerletMesh : MonoBehaviour
         // VerletMeshFactory.Loop(this, 10, 1.0f);
         // VerletMeshFactory.FullyConnectedLoop(this, 10, 1.0f);
         // VerletMeshFactory.FishShapeFullyConnected(this);
-        VerletMeshFactory.FishShape(this);
+        if (meshType == MeshType.LINE)
+            VerletMeshFactory.Line(this, 5, 1.0f);
+        else if (meshType == MeshType.LOOP)
+            VerletMeshFactory.Loop(this, 10, 1.0f);
+        else if (meshType == MeshType.FULLY_CONNECTED_LOOP)
+            VerletMeshFactory.FullyConnectedLoop(this, 10, 1.0f);
+        else if (meshType == MeshType.FISH_SHAPE)
+            VerletMeshFactory.FishShape(this);
+        else if (meshType == MeshType.FISH_SHAPE_FULLY_CONNECTED)
+            VerletMeshFactory.FishShapeFullyConnected(this);
+
+        VerletSolver.verletMeshes.Add(this);
+    }
+
+    void OnDestroy()
+    {
+        VerletSolver.verletMeshes.Remove(this);
     }
 
     void Update()
@@ -35,7 +64,6 @@ public class VerletMesh : MonoBehaviour
 
     void FixedUpdate()
     {
-        VerletSolver.Solve(this);
     }
 
     private void OnDrawGizmos()
@@ -64,13 +92,19 @@ public class VerletMesh : MonoBehaviour
         lineRenderer.positionCount = verlets.Count;
         //loop
         lineRenderer.loop = true;
+        if (meshType == MeshType.LINE)
+            lineRenderer.loop = false;
 
     }
 
     private void lineRendererUpdate()
     {
-        lineRenderer.positionCount = verlets.Count-1;
-        for (int i = 0; i < verlets.Count-1; i++)
+        int lineLength = verlets.Count ;
+        if (meshType != MeshType.LINE){ 
+            lineLength = verlets.Count - 1;
+        }
+        lineRenderer.positionCount = lineLength;
+        for (int i = 0; i < lineLength; i++)
         {
             lineRenderer.SetPosition(i, verlets[i].transform.position);
         }

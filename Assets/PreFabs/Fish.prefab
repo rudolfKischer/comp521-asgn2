@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56632324391714032adae57481034292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalLifeTime: 60
+  totalLifeTime: 5
 --- !u!114 &2565543579456351161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,3 +154,4 @@ MonoBehaviour:
   verlets: []
   lineRenderer: {fileID: 0}
   color: {r: 1, g: 0, b: 0, a: 1}
+  meshType: 0
