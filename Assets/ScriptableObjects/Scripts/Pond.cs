@@ -72,14 +72,17 @@ public class Pond : MonoBehaviour
     {
         GameObject fish = Instantiate(fishPrefab, launchPointObj.transform.position, Quaternion.identity);
         fish.GetComponent<SpriteRenderer>().color = pondColour;
+        VerletMesh verletMesh = fish.GetComponent<VerletMesh>();
+        verletMesh.color = pondColour;
+
         Vector2 direction = launchDirectionObj.transform.position - launchPointObj.transform.position;
         float angle = Random.Range(-launchRangeAngle, launchRangeAngle);
         direction = Quaternion.Euler(0, 0, angle) * direction;
-        Vector2 force = direction.normalized * launchForce;
+        Vector2 impulse = direction.normalized * launchForce;
         PhysicsBody physicsBody = fish.GetComponent<PhysicsBody>();
         if (physicsBody != null)
         {
-            physicsBody.addForce(force);
+            physicsBody.addImpulse(impulse);
         }
         else
         {

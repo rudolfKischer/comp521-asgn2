@@ -13,8 +13,7 @@ public class PhysicsBody : MonoBehaviour
     [SerializeField]
     public bool immovable = false;
     [SerializeField]
-    public float restitution = 0.1f;
-    private Vector2 prevPosition;
+    public float restitution = 1.0f;
 
     [SerializeField]
     public bool gravityEnabled = true;
@@ -30,44 +29,25 @@ public class PhysicsBody : MonoBehaviour
 
     void OnEnable()
     {
-      prevPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateBody(Time.deltaTime);
+    }
 
-        
-
-        if (!immovable)
-        {
-          transform.position += (Vector3)velocity * Time.deltaTime;
-          velocity += gravityEnabled ? new Vector2(0f, -gravity) * Time.deltaTime : Vector2.zero;
-        }
-        prevPosition = transform.position;
+    public void UpdateBody(float deltaTime) {
+      if (!immovable)
+      {
+        transform.position += (Vector3)velocity * deltaTime;
+        velocity += !gravityEnabled ? Vector2.zero : new Vector2(0f, -gravity) * deltaTime;
+      }
     }
 
     public float getMass()
     {
       return immovable ? float.MaxValue : mass;
-    }
-
-
-    public Vector2 getImpulse(PhysicsBody other)
-    {
-      Collider thisBodyCollider = GetComponent<Collider>();
-      Collider otherBodyCollider = other.GetComponent<Collider>();
-      Vector2 collisionNormal = thisBodyCollider.CollisionNormal(otherBodyCollider);
-      float velocityAlongNormal = Vector2.Dot(velocity - other.velocity, collisionNormal);
-
-
-      // do note resolve if velocities are separating
-      // if (velocityAlongNormal < 0) return Vector2.zero;
-
-      float e = Mathf.Min(restitution, other.restitution);
-      float j = -(1 + e) * velocityAlongNormal;
-      j /= 1 / getMass() + 1 / other.getMass();
-      return j * collisionNormal;
     }
 
     public void handleCollision(PhysicsBody other)
@@ -78,20 +58,15 @@ public class PhysicsBody : MonoBehaviour
         other.velocity = Vector2.zero;
         return;
       }
-      //step back
-      transform.position = prevPosition;
-      other.transform.position = other.prevPosition;
 
-
-      Vector2 impulse = getImpulse(other);
-      velocity += 1 / getMass() * impulse;
-      other.velocity -= 1 / other.getMass() * impulse;
+      Vector2 impulse = PhysicsFormulas.Impulse(this, other);
+      addImpulse(impulse);
+      other.addImpulse(-impulse);
     }
 
-    public void addForce(Vector2 force)
+    public void addImpulse(Vector2 impulse)
     {
-      velocity += force / getMass();
+      velocity += !immovable ? impulse / getMass() : Vector3.zero;
     }
     
-
 }

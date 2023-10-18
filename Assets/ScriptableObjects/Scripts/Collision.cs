@@ -50,6 +50,31 @@ public class Collision : MonoBehaviour
         normalsToDraw.Add((point, normal));
     }
 
+    private void showNormals() {
+      for (int i = 0; i < objects.Count; i++)
+      {
+        for (int j = i + 1; j < objects.Count; j++)
+        { 
+          GameObject obj1 = objects[i];
+          GameObject obj2 = objects[j];
+          Collider collider1 = obj1.GetComponent<Collider>();
+          Collider collider2 = obj2.GetComponent<Collider>();
+          // only show normals if they are close
+          float minDistance = 3f;
+          if (Vector2.Distance(collider1.transform.position, collider2.transform.position) < minDistance)
+          {
+            if (debug) {
+              addCollisionNormalToDraw(collider1, collider2);
+            }
+          }
+
+
+
+        }
+      }
+
+    }
+
     private void handleCollision(GameObject obj1, GameObject obj2)
     {
       Collider collider1 = obj1.GetComponent<Collider>();
@@ -59,10 +84,15 @@ public class Collision : MonoBehaviour
         // handle collision
         PhysicsBody body1 = obj1.GetComponent<PhysicsBody>();
         PhysicsBody body2 = obj2.GetComponent<PhysicsBody>();
-        body1.handleCollision(body2);
-      }
-      if (debug) {
-        addCollisionNormalToDraw(collider1, collider2);
+        if (collider1.isTrigger || collider2.isTrigger)
+        {
+          collider1.TriggerCollision(obj2);
+          collider2.TriggerCollision(obj1);
+        }
+        if (body1 && body2)
+        {
+          body1.handleCollision(body2);
+        }
       }
     }
 
@@ -80,7 +110,12 @@ public class Collision : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        handleCollisions();
+        showNormals();
+    }
+
+    void FixedUpdate()
+    {
+      handleCollisions();
     }
 
     private void OnDrawGizmos()

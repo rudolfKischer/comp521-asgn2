@@ -22,9 +22,25 @@ public class Collider : MonoBehaviour
   [SerializeField]
   public float lineWidth = 0.05f;
 
+  [SerializeField]
+  public bool isTrigger = false;
   public ColliderType colliderType;
 
   protected LineRenderer lineRenderer;
+
+  private Vector2 prevPosition;
+
+
+  public event System.Action<GameObject> OnCollisionEvent;
+
+  public void TriggerCollision(GameObject other)
+  {
+      OnCollisionEvent?.Invoke(other);
+  }
+
+
+
+
 
   private void CreateLineRenderer()
   {
@@ -40,19 +56,6 @@ public class Collider : MonoBehaviour
     lineRenderer.useWorldSpace = false;
   }
 
-  public Vector2 CollisionNormal(Collider other)
-  {
-    Vector2 point1 = this.GetClosestPoint(other.transform.position);
-    Vector2 point = other.GetClosestPoint(point1);
-    point1 = this.GetClosestPoint(point);
-    point = other.GetClosestPoint(point1);
-
-    Vector2 normal = GetNormal(point);
-    return normal;
-  }
-
-
-
   protected virtual void Start()
   {
     Collision.Instance.RegisterCollider(this.gameObject);
@@ -64,10 +67,7 @@ public class Collider : MonoBehaviour
     return; // do nothing
   }
 
-  public virtual bool IsColliding(Collider other)
-  {
-    return false;
-  }
+
 
   public virtual void Update()
   {
@@ -77,24 +77,14 @@ public class Collider : MonoBehaviour
     }
   }
 
-  public virtual bool IsCollidingWith(CircleCollider other)
-  {
-    return false;
-  }
+  public virtual Vector2 CollisionNormal(Collider other) { return Vector2.zero;}
+  public virtual Vector2 CollisionNormalWith(CircleCollider other) { return Vector2.zero; }
+  public virtual Vector2 CollisionNormalWith(LineCollider other) { return Vector2.zero; }
+  public virtual bool IsColliding(Collider other) { return false; }
+  public virtual bool IsCollidingWith(CircleCollider other) { return false; }
+  public virtual bool IsCollidingWith(LineCollider other) { return false; }
 
-  public virtual bool IsCollidingWith(LineCollider other)
-  {
-    return false;
-  }
-
-  public virtual Vector2 GetClosestPoint(Vector2 point)
-  {
-    return Vector2.zero;
-  }
-
-  public virtual Vector2 GetNormal(Vector2 point)
-  {
-    return Vector2.zero;
-  }
+  public virtual Vector2 GetClosestPoint(Vector2 point){ return Vector2.zero; }
+  public virtual Vector2 GetNormal(Vector2 point) { return Vector2.zero;}
 
 }

@@ -37,29 +37,13 @@ public class CircleCollider : Collider
   }
 
 
-  public override bool IsColliding(Collider other)
-  {
-    return  other.IsCollidingWith(this);
-  }
+  public override bool IsColliding(Collider other) { return other.IsCollidingWith(this); }
+  public override bool IsCollidingWith(CircleCollider other) { return CollisionAlgorithms.CircleCircleCollision(this, other); }
+  public override bool IsCollidingWith(LineCollider other) { return CollisionAlgorithms.CircleLineCollision(this, other); }
 
-  public override bool IsCollidingWith(CircleCollider other)
-  {
-    float r1 = this.GetRadius();
-    float r2 = other.GetRadius();
-    float d = Vector3.Distance(this.transform.position, other.transform.position);
-    return d <= r1 + r2;
-  }
-
-  public override bool IsCollidingWith(LineCollider other)
-  {
-
-    Vector2 closestPointLine = other.GetClosestPoint(this.transform.position);
-    
-    float d = Vector2.Distance(closestPointLine, this.transform.position);
-    bool isColliding = d <= GetRadius();
-    Debug.Log("is colliding: " + isColliding);
-    return isColliding;
-  }
+  public override Vector2 CollisionNormal(Collider other) { return other.CollisionNormalWith(this);}
+  public override Vector2 CollisionNormalWith(CircleCollider other) { return CollisionAlgorithms.CircleCircleCollisionNormal(this, other); }
+  public override Vector2 CollisionNormalWith(LineCollider other) { return CollisionAlgorithms.CircleLineCollisionNormal(this, other); }
 
   public override Vector2 GetClosestPoint(Vector2 point)
   {

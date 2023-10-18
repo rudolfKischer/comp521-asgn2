@@ -1,5 +1,57 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5153009710212048322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8962381262129003478}
+  - component: {fileID: 6936412114735635958}
+  m_Layer: 0
+  m_Name: deleteFish
+  m_TagString: DeleteFish
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8962381262129003478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5153009710212048322}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.33, z: 0}
+  m_LocalScale: {x: 1, y: 4, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5562878070725723415}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6936412114735635958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5153009710212048322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c5fa194094674dc3b14c0b515a3110d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showCollider: 1
+  lineWidth: 0.05
+  isTrigger: 1
+  colliderType: 0
+  point1: {x: -0.5, y: 0}
+  point2: {x: 0.5, y: 0}
+  collisionEnabled: 1
+  debug: 1
 --- !u!1 &5562878069589107708
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,6 +115,7 @@ Transform:
   m_Children:
   - {fileID: 5562878071526694540}
   - {fileID: 5562878069589107709}
+  - {fileID: 8962381262129003478}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -130,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a199c0630a34dabb3dd0065b6e4ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishPrefab: {fileID: 3809965478534905438, guid: c97f63c594eb44ad0b4aaeaac5bd077f, type: 3}
+  fishPrefab: {fileID: 5118159664196634615, guid: 173d3440126e64c10bfb65a48c857eca, type: 3}
   launchDirectionObj: {fileID: 5562878071526694539}
   launchPointObj: {fileID: 5562878069589107708}
   launchForce: 15
